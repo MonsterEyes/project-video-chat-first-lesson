@@ -83,7 +83,6 @@ const UserSettings = (userId) => {
                         style={{ color: color }}
                     />
                 </label>
-                <br />
                 <label>
                     {/* Color: */}
                     <input

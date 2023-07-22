@@ -3,6 +3,7 @@ import { SocketContext } from "./Context";
 
 import Peers from "./components/peers";
 import Chat from "./components/chat";
+import RoomForm from "./components/roomForm";
 
 const App = () => {
     const { joinRoom, socket, currentRoom, socketClient, roomId, setRoomId } =
@@ -18,6 +19,8 @@ const App = () => {
                 if (created) {
                     setRoomId(roomId);
                     joinRoom(roomId, socketClient);
+                } else {
+                    console.error("Room creation failed");
                 }
             });
         }
@@ -25,24 +28,15 @@ const App = () => {
 
     return (
         <>
-            {!currentRoom && (
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Enter room ID"
-                        value={roomId}
-                        onChange={(e) => setRoomId(e.target.value)}
-                    />
-                    <br />
-                    <button onClick={handleJoinRoom}>Join Room</button>
-                    <button onClick={() => createRoom(roomId)}>
-                        Create Room
-                    </button>
-                </div>
-            )}
-            {currentRoom && (
+            {!currentRoom ? (
+                <RoomForm
+                    roomId={roomId}
+                    setRoomId={setRoomId}
+                    handleJoinRoom={handleJoinRoom}
+                    createRoom={createRoom}
+                />
+            ) : (
                 <>
-                    <h4>Current Room: {currentRoom}</h4>
                     <Peers />
                     <Chat roomId={currentRoom} id="chat" />
                 </>

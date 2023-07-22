@@ -100,7 +100,7 @@ const Peers = () => {
         <div id="peers">
             <div>
                 <video
-                    style={{ width: "150px" }}
+                    style={{ width: "200px" }}
                     ref={userVideo}
                     autoPlay
                     muted
@@ -132,7 +132,7 @@ const Video = ({ stream }) => {
         }
     }, [stream]);
 
-    return <video style={{ width: "150px" }} ref={ref} autoPlay />;
+    return <video style={{ width: "200px" }} ref={ref} autoPlay />;
 };
 
 export default Peers;

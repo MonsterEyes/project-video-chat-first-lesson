@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { io } from "socket.io-client";
 
 const SocketContext = createContext();
@@ -8,7 +8,6 @@ const ContextProvider = ({ children }) => {
     const [socketClient, setSocketClient] = useState(null);
     const [currentRoom, setCurrentRoom] = useState(null);
     const [roomId, setRoomId] = useState("");
-    const [roomUsers, setRoomUsers] = useState({});
     const [usersInfo, setUsersInfo] = useState({});
 
     useEffect(() => {
@@ -32,7 +31,7 @@ const ContextProvider = ({ children }) => {
         console.log("Creating room:", roomId);
         if (socketClient) {
             socketClient.emit("create_room", roomId);
-            joinRoom(roomId, socketClient);
+            joinRoom(roomId);
         }
     };
 
@@ -44,30 +43,6 @@ const ContextProvider = ({ children }) => {
             socketClient.emit("join_room", roomId);
         }
     };
-
-    // // Add the handleMove function
-    const handleMove = (updatedClientsData) => {
-        const updatedRoomUsers = updatedClientsData.reduce((acc, user) => {
-            acc[user.id] = {
-                position: user.position,
-                rotation: user.rotation,
-            };
-            return acc;
-        }, {});
-
-        setRoomUsers(updatedRoomUsers);
-    };
-
-    // Add the useEffect to subscribe to the "move" event
-    useEffect(() => {
-        if (socketClient) {
-            socketClient.on("move", handleMove);
-
-            return () => {
-                socketClient.off("move", handleMove);
-            };
-        }
-    }, [socketClient]);
 
     return (
         <SocketContext.Provider
@@ -81,7 +56,6 @@ const ContextProvider = ({ children }) => {
                 setRoomId,
                 currentRoom,
                 setCurrentRoom,
-                roomUsers,
                 usersInfo,
                 setUsersInfo,
             }}

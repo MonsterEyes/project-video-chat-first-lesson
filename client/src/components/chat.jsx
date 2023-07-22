@@ -5,7 +5,7 @@ import { SocketContext } from "../Context";
 function Chat({ roomId }) {
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState("");
-    const { socketClient, usersInfo } = useContext(SocketContext);
+    const { socketClient, usersInfo, currentRoom } = useContext(SocketContext);
 
     useEffect(() => {
         socketClient.on("receive_message", ({ userId, userName, message }) => {
@@ -33,6 +33,7 @@ function Chat({ roomId }) {
 
     return (
         <div id="chat">
+            <h3>Current Room: {currentRoom}</h3>
             <div>
                 {messages.map((message, index) => (
                     <div key={index}>
